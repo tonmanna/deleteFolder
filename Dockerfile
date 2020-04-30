@@ -1,5 +1,5 @@
-FROM rust:1.37
+FROM rust:1.43
 WORKDIR /usr/src/app
 COPY . .
-RUN cargo install --path ./lab1
-CMD ["lab1"]
+RUN cargo install
+CMD ["remove_image_file"]

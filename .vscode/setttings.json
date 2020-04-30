@@ -9,5 +9,8 @@
 
     },
     "eslint.autoFixOnSave": true,
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "code-runner.executorMap": {
+        "rust": "cargo run # $fileName"
+    }
 }

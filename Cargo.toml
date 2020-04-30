@@ -1,5 +1,5 @@
 [package]
-name = "removeImageFile"
+name = "remove_image_file"
 version = "0.1.0"
 authors = ["Worawut <tonmanna@gmail.com>"]
 edition = "2018"
