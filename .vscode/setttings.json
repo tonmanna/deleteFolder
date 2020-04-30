@@ -1,0 +1,13 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/logs": true,
+        "target": true,
+        "Cargo.lock": true
+
+    },
+    "eslint.autoFixOnSave": true,
+    "editor.formatOnSave": true
+}
