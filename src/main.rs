@@ -1,5 +1,6 @@
 use chrono::DateTime;
 use chrono::Utc;
+use std::env;
 use std::fs;
 use std::time::SystemTime;
 use time;
@@ -12,6 +13,8 @@ struct FileStruct {
 
 fn main() {
     let start = time::Instant::now();
+    // Prints each argument on a separate line
+    // let arg = env::args_os();
 
     match list_dir("./".to_string()) {
         Err(e) => println!("Error {}", e),
