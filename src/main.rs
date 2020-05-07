@@ -33,51 +33,36 @@ fn list_dir(param: String) -> std::io::Result<()> {
                 Ok(_) => {
                     if let Ok(_) = metadata {
                         let total_file = count_file.0;
-                        println!("{:?}, TotalFile: {:?}", path_result.display(), total_file);
+                        //println!("{:?}, TotalFile: {:?}", path_result.display(), total_file);
                         let mut file_result: Vec<FileStruct> = count_file.1;
                         file_result.sort_by_key(|f| f.created_date);
-                        if total_file > 2 {
-                            slice_files(file_result);
+                        let max_file: usize = 5;
+                        if total_file > max_file as i32 {
+                            slice_files(file_result, max_file);
                         }
-                        println!("--------------------------------------------------------------");
                     }
                 }
             }
         }
-        // } else {
-        //     if let Ok(v) = metadata {
-        //         match v.created() {
-        //             Ok(time) => {
-        //                 // println!(
-        //                 //     "{:?} {:?}",
-        //                 //     system_time_to_date_time(time),
-        //                 //     path_result.display()
-        //                 // );
-        //             }
-        //             Err(e) => println!("{:?}", e),
-        //         }
-        //     } else {
-        //         println!("Not supported on this platform or filesystem");
-        //     }
-        // }
     }
     Ok(())
 }
 
-fn slice_files(files: Vec<FileStruct>) {
+fn slice_files(files: Vec<FileStruct>, number: usize) {
     println!("Length: {:?}", files.len());
-    let files_local = &files[1..=files.len() - 1];
+    let files_local = &files[0..number];
     // let files_local = &files[1..files.len()];
     for file in files_local {
-        println!(
+        print!(
             "{:?} Date: {:?}",
             file.name,
             system_time_to_date_time(file.created_date)
         );
-        let Ok(_) = fs::remove_file(file.name.to_string()) {
-            print("Deltete:", file.name)
-        }
+        // if let Ok(_) = fs::remove_file(file.name.to_string()) {
+        //     println!(" was delete.");
+        // }
     }
+    println!("--------------------------------------------------------------");
 }
 
 fn system_time_to_date_time(t: SystemTime) -> String {
