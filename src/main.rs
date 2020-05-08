@@ -17,6 +17,7 @@ fn main() {
     let mut args: Vec<String> = env::args().collect();
     if args.len() == 2 {
         let param = args.remove(1);
+        println!("Param : {:?}", param);
         if path_exists(&param) {
             match list_dir(&param) {
                 Err(e) => println!("Error {}", e),
@@ -61,8 +62,9 @@ fn list_dir(param: &String) -> std::io::Result<()> {
 }
 
 fn slice_files(files: Vec<FileStruct>, number: usize) {
-    println!("Length: {:?}", files.len());
-    let files_local = &files[0..number];
+    let total_file = files.len();
+    println!("Length: {:?}", total_file);
+    let files_local = &files[0..files.len()-number];
     // let files_local = &files[1..files.len()];
     for file in files_local {
         println!(
