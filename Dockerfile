@@ -13,4 +13,5 @@ RUN cargo install --target x86_64-unknown-linux-musl --path .
 FROM scratch
 COPY --from=builder /usr/local/cargo/bin/remove_image_file .
 USER 0
+RUN chmod 755 remove_image_file
 CMD ["./remove_image_file"]
