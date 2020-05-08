@@ -2,6 +2,7 @@ use chrono::DateTime;
 use chrono::Utc;
 use std::env;
 use std::fs;
+use std::path::Path;
 use std::time::SystemTime;
 use time;
 
@@ -13,17 +14,25 @@ struct FileStruct {
 
 fn main() {
     let start = time::Instant::now();
-    // Prints each argument on a separate line
-    // let arg = env::args_os();
-
-    match list_dir("./".to_string()) {
-        Err(e) => println!("Error {}", e),
-        Ok(_) => {}
+    let mut args: Vec<String> = env::args().collect();
+    if args.len() == 2 {
+        let param = args.remove(1);
+        if path_exists(&param) {
+            match list_dir(&param) {
+                Err(e) => println!("Error {}", e),
+                Ok(_) => {}
+            }
+        } else {
+            println!("Path not found!!");
+        }
+        println!("{:?} seconds for whatever you did.", start.elapsed());
+    } else {
+        println!("The remove_image_file command used for keep last 5 file  ");
+        println!("Example : ./remove_image_file <path>");
     }
-    println!("{:?} seconds for whatever you did.", start.elapsed());
 }
 
-fn list_dir(param: String) -> std::io::Result<()> {
+fn list_dir(param: &String) -> std::io::Result<()> {
     let paths = fs::read_dir(param).unwrap();
     for path in paths {
         let path_result = path.unwrap().path();
@@ -31,7 +40,7 @@ fn list_dir(param: String) -> std::io::Result<()> {
         if path_result.is_dir() {
             let dir_name = path_result.display();
             let count_file = get_file_inside(dir_name.to_string());
-            match list_dir(dir_name.to_string()) {
+            match list_dir(&dir_name.to_string()) {
                 Err(e) => print!("Break Error {}", e),
                 Ok(_) => {
                     if let Ok(_) = metadata {
@@ -56,14 +65,14 @@ fn slice_files(files: Vec<FileStruct>, number: usize) {
     let files_local = &files[0..number];
     // let files_local = &files[1..files.len()];
     for file in files_local {
-        print!(
+        println!(
             "{:?} Date: {:?}",
             file.name,
             system_time_to_date_time(file.created_date)
         );
-        // if let Ok(_) = fs::remove_file(file.name.to_string()) {
-        //     println!(" was delete.");
-        // }
+        if let Ok(_) = fs::remove_file(file.name.to_string()) {
+            println!(" was delete.");
+        }
     }
     println!("--------------------------------------------------------------");
 }
@@ -96,4 +105,8 @@ fn get_file_inside(s: String) -> (i32, Vec<FileStruct>) {
         }
     }
     return (i, file_list);
+}
+
+pub fn path_exists(path: &String) -> bool {
+    Path::new(path).exists()
 }
