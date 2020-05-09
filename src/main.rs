@@ -1,10 +1,5 @@
 use chrono::DateTime;
 use chrono::Utc;
-<<<<<<< HEAD
-
-=======
-use std::convert::TryFrom;
->>>>>>> 6e97740cb81709eff1e9a2d035fb9ea35dcad767
 use std::env;
 use std::fs;
 use std::path::Path;
@@ -50,13 +45,12 @@ fn list_dir(param: &String) -> std::io::Result<()> {
                 Err(e) => print!("Break Error {}", e),
                 Ok(_) => {
                     if let Ok(_) = metadata {
-                        let total_file = count_file.0;
                         //println!("{:?}, TotalFile: {:?}", path_result.display(), total_file);
                         let mut file_result: Vec<FileStruct> = count_file.1;
+                        let total_file = file_result.len();
                         file_result.sort_by_key(|f| f.created_date);
                         let max_file: usize = 5;
-                        if total_file > max_file as i32 {
-                            print!("File: {:?}", file_result);
+                        if total_file > max_file {
                             slice_files(file_result, max_file);
                         }
                     }
