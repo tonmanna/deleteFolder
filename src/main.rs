@@ -1,11 +1,11 @@
 use chrono::DateTime;
 use chrono::Utc;
+use std::convert::TryFrom;
 use std::env;
 use std::fs;
 use std::path::Path;
 use std::time::SystemTime;
 use time;
-use std::convert::TryFrom;
 
 #[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct FileStruct {
@@ -63,9 +63,9 @@ fn list_dir(param: &String) -> std::io::Result<()> {
 }
 
 fn slice_files(files: Vec<FileStruct>, number: usize, total_file: i32) {
-    if total_file>0 {
+    if total_file > 0 {
         println!("Length: {:?}", total_file);
-        let delte_total_item = usize::try_from(total_file).unwrap()-number;
+        let delte_total_item = usize::try_from(total_file).unwrap() - number;
         let files_local = &files[0..delte_total_item];
         // let files_local = &files[1..files.len()];
         for file in files_local {
