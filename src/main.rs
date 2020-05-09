@@ -1,11 +1,11 @@
 use chrono::DateTime;
 use chrono::Utc;
+
 use std::env;
 use std::fs;
 use std::path::Path;
 use std::time::SystemTime;
 use time;
-use std::convert::TryFrom;
 
 #[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct FileStruct {
@@ -52,7 +52,8 @@ fn list_dir(param: &String) -> std::io::Result<()> {
                         file_result.sort_by_key(|f| f.created_date);
                         let max_file: usize = 5;
                         if total_file > max_file as i32 {
-                            slice_files(file_result, max_file, total_file);
+                            print!("File: {:?}", file_result);
+                            slice_files(file_result, max_file);
                         }
                     }
                 }
@@ -62,24 +63,21 @@ fn list_dir(param: &String) -> std::io::Result<()> {
     Ok(())
 }
 
-fn slice_files(files: Vec<FileStruct>, number: usize, total_file: i32) {
-    if total_file>0 {
-        println!("Length: {:?}", total_file);
-        let delte_total_item = usize::try_from(total_file).unwrap()-number;
-        let files_local = &files[0..delte_total_item];
-        // let files_local = &files[1..files.len()];
-        for file in files_local {
-            println!(
-                "{:?} Date: {:?}",
-                file.name,
-                system_time_to_date_time(file.created_date)
-            );
-            if let Ok(_) = fs::remove_file(file.name.to_string()) {
-                println!(" was delete.");
-            }
+fn slice_files(files: Vec<FileStruct>, number: usize) {
+    let files_local = &files[..number];
+    // let files_local = &files[1..files.len()];
+    // let files_local = &files[1..files.len()];
+    for file in files_local {
+        println!(
+            "{:?} Date: {:?}",
+            file.name,
+            system_time_to_date_time(file.created_date)
+        );
+        if let Ok(_) = fs::remove_file(file.name.to_string()) {
+            println!(" was delete.");
         }
-        println!("--------------------------------------------------------------");
     }
+    println!("--------------------------------------------------------------");
 }
 
 fn system_time_to_date_time(t: SystemTime) -> String {
